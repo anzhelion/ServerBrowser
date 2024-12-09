@@ -41,7 +41,7 @@ namespace ServerBrowser.Data.Models
         // 0 - Diverse Server
         // 1 - Game Server
         // 2 - Lobby Server
-        // 4 - Chatting Server
+        // 3 - Chatting Server
 
         [Required]
         public int IPAddress { get; set; }
