@@ -13,7 +13,7 @@ namespace ServerBrowser.Data.Models
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        [MinLength(0)]
+        [MinLength(10)]
         [MaxLength(128)]
         public string Description { get; set; } = string.Empty;
     }
