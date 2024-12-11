@@ -12,7 +12,7 @@
         Title<input type="text" name="Title" /><br>
         Description<input type="text" name="Description" /><br>
         ImageUrl<input type="text" name="ImageUrl" /><br>
-        PublisherId<input type="text" name="PublisherId" /><br>
+        <input type="hidden" name="PublisherId" />
         AddedOn<input type="datetime-local" name="AddedOn" /><br>
         ServerType<input type="number" name="ServerType" /><br>
         IPAddress<input type="text" name="IPAddress" /><br>
@@ -24,6 +24,7 @@
         IsDedicated<input asp-for="@Model.IsDedicated" type="checkbox" name="IsDedicated" /><br>
         IsOfficial<input asp-for="@Model.IsOfficial" type="checkbox" name="IsOfficial" /><br>
         IsRemoved<input asp-for="@Model.IsRemoved" type="checkbox" name="IsRemoved" /><br>
+
         <button type="submit">Create</button>
     </form>
 </div>

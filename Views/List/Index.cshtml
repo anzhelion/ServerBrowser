@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ListViewModel>
+@{
+    ViewData["Title"] = "Server-Lists Browser";
+}
+
+<div class="text-center">
+    <h1 class="display-4">There are currently @Model.Count() server lists!</h1>
+    <a asp-controller="List" asp-action="Add">Add List</a>
+</div>
+
+<div>
+    @foreach (var thismodel in Model)
+    {
+        <div style="display: block; clear: both;">
+            Server: @thismodel.Title<br>
+            Desc: @thismodel.Description<br>
+            ServerIds: 
+            @{
+                int[] list = thismodel.ServerIds.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToArray();
+
+                for (int i = 0; i < list.Length; ++i)
+                {
+                    var item = list[i];
+                    <a asp-controller="Server" asp-action="Index">@item</a>
+                    if (i != list.Length - 1)
+                    {
+                        <text>, </text>
+                    }
+                }
+            }
+            
+        </div>
+        <br>
+    }
+</div>
