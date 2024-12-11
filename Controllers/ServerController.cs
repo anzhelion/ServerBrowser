@@ -59,27 +59,56 @@ namespace ServerBrowser.Controllers
         [HttpPost]
         public IActionResult Add(ServerViewModel model)
         {
-            var data = new Server
-            {
-                Title = model.Title,
-                Description = model.Description,
-                ImageUrl = model.ImageUrl,
-                PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                AddedOn = model.AddedOn,
-                ServerType = model.ServerType,
-                IPAddress = model.IPAddress,
-                LastLiveOn = model.LastLiveOn,
-                ActiveTimeStart = model.ActiveTimeStart,
-                ActiveTimeEnd = model.ActiveTimeEnd,
-                PeakConcurrentUsers = model.PeakConcurrentUsers,
-                IsDedicated = model.IsDedicated,
-                IsOfficial = model.IsOfficial,
-                IsRemoved = model.IsRemoved,
-                IsPrivate= model.IsPrivate,
-            };
+            bool IsValid = true;
 
-            context.Servers.Add(data);
-            context.SaveChanges();
+            // Validation
+            if (model.Title?.Length > 64 ||
+                model.Description?.Length > 64 ||
+                model.ImageUrl?.Length > 128 ||
+                model.IPAddress?.Length > 128)
+            {
+                IsValid = false;
+            }
+
+            if (model.Title == null || model.Description == null ||
+                model.ImageUrl == null || model.IPAddress == null)
+            {
+                IsValid = false;
+            }
+
+            if (model.Title?.Length < 1 ||
+                model.Description?.Length < 1 ||
+                model.ImageUrl?.Length < 1 ||
+                model.IPAddress?.Length < 1)
+            {
+                IsValid = false;
+            }
+
+            if (IsValid)
+            {
+                var data = new Server
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    ImageUrl = model.ImageUrl,
+                    PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    AddedOn = model.AddedOn,
+                    ServerType = model.ServerType,
+                    IPAddress = model.IPAddress,
+                    LastLiveOn = model.LastLiveOn,
+                    ActiveTimeStart = model.ActiveTimeStart,
+                    ActiveTimeEnd = model.ActiveTimeEnd,
+                    PeakConcurrentUsers = model.PeakConcurrentUsers,
+                    IsDedicated = model.IsDedicated,
+                    IsOfficial = model.IsOfficial,
+                    IsRemoved = model.IsRemoved,
+                    IsPrivate = model.IsPrivate,
+                };
+
+                context.Servers.Add(data);
+                context.SaveChanges();
+            }
+
 
             return RedirectToAction(nameof(Index));
         }

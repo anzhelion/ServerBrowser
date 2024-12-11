@@ -43,17 +43,47 @@ namespace ServerBrowser.Controllers
         [HttpPost]
         public IActionResult Add(ReviewViewModel model)
         {
-            var data = new Announcement
-            {
-                Title = model.Title,
-                Description = model.Description,
-                PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                AddedOn = model.AddedOn,
-                ServerId = model.ServerId
-            };
+            bool IsValid = true;
 
-            context.Announcements.Add(data);
-            context.SaveChanges();
+            // Validation
+            if (model.Title?.Length > 64 ||
+                model.Description?.Length > 128)
+            {
+                IsValid = false;
+            }
+
+            if (model.Title == null || model.Description == null)
+            {
+                IsValid = false;
+            }
+
+            if (model.Title?.Length < 1 ||
+                model.Description?.Length < 1)
+            {
+                IsValid = false;
+            }
+
+            int Count = context.Servers.Where(x => x.Id == model.ServerId).Count();
+            if (Count != 1)
+            {
+                IsValid = false;
+            }
+
+            if (IsValid)
+            {
+
+                var data = new Announcement
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    AddedOn = model.AddedOn,
+                    ServerId = model.ServerId
+                };
+
+                context.Announcements.Add(data);
+                context.SaveChanges();
+            }
 
             return RedirectToAction(nameof(Index));
         }

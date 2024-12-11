@@ -48,17 +48,49 @@ namespace ServerBrowser.Controllers
                     .Select(int.Parse)
                     .ToArray();
 
-            var data = new ServerList
-            {
-                Title = model.Title,
-                Description = model.Description,
-                PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                AddedOn = model.AddedOn,
-                ServerIds = Ids
-            };
+            bool IsValid = true;
 
-            context.ServerLists.Add(data);
-            context.SaveChanges();
+            // Validation
+            if (model.Title?.Length > 64 ||
+                model.Description?.Length > 256)
+            {
+                IsValid = false;
+            }
+
+            if (model.Title == null || model.Description == null)
+            {
+                IsValid = false;
+            }
+
+            if (model.Title?.Length < 1 ||
+                model.Description?.Length < 1)
+            {
+                IsValid = false;
+            }
+
+            foreach (var Id in Ids)
+            {
+                int Count = context.Servers.Where(x => x.Id == Id).Count();
+                if (Count != 1)
+                {
+                    IsValid = false;
+                }
+            }
+
+            if (IsValid)
+            {
+                var data = new ServerList
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    AddedOn = model.AddedOn,
+                    ServerIds = Ids
+                };
+
+                context.ServerLists.Add(data);
+                context.SaveChanges();
+            }
 
             return RedirectToAction(nameof(Index));
         }
