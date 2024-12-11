@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ServerViewModel>
+@{
+    ViewData["Title"] = "Servers List";
+}
+
+<div class="text-center">
+    <h1 class="display-4">There are currently @Model.Count() servers!</h1>
+    <a asp-controller="Server" asp-action="Add">Add Server</a>
+</div>
+
+<div>
+    @foreach (var thismodel in Model)
+    {
+        <div style="display: block; clear: both;">
+            <img src="@thismodel.ImageUrl" style="width: 100px; height: auto; float: left; margin-right: 10px;" />
+            Server: @thismodel.Title<br>
+            Desc: @thismodel.Description<br>
+            PCU: @thismodel.PeakConcurrentUsers, AddedOn: @thismodel.AddedOn<br>
+        </div>
+        <br>
+    }
+</div>

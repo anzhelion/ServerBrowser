@@ -1,0 +1,29 @@
+﻿@model ServerViewModel
+@{
+    ViewData["Title"] = "Servers List";
+}
+
+<div class="text-center">
+    <h1 class="display-4">You are creating a server!</h1>
+</div>
+
+<div>
+    <form asp-controller="Server" asp-action="Add" method="post">
+        Title<input type="text" name="Title" /><br>
+        Description<input type="text" name="Description" /><br>
+        ImageUrl<input type="text" name="ImageUrl" /><br>
+        PublisherId<input type="text" name="PublisherId" /><br>
+        AddedOn<input type="datetime-local" name="AddedOn" /><br>
+        ServerType<input type="number" name="ServerType" /><br>
+        IPAddress<input type="text" name="IPAddress" /><br>
+        LastLiveOn<input type="datetime-local" name="LastLiveOn" /><br>
+        ActiveTimeStart<input type="time" name="ActiveTimeStart" /><br>
+        ActiveTimeEnd<input type="time" name="ActiveTimeEnd" /><br>
+        PeakConcurrentUsers<input asp-for="@Model.PeakConcurrentUsers" type="number" name="PeakConcurrentUsers" /><br>
+        IsPrivate<input asp-for="@Model.IsPrivate" type="checkbox" name="IsPrivate" /><br>
+        IsDedicated<input asp-for="@Model.IsDedicated" type="checkbox" name="IsDedicated" /><br>
+        IsOfficial<input asp-for="@Model.IsOfficial" type="checkbox" name="IsOfficial" /><br>
+        IsRemoved<input asp-for="@Model.IsRemoved" type="checkbox" name="IsRemoved" /><br>
+        <button type="submit">Create</button>
+    </form>
+</div>

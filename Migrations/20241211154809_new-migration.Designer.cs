@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServerBrowser.Data;
 
 #nullable disable
 
-namespace ServerBrowser.Data.Migrations
+namespace ServerBrowser.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241211154809_new-migration")]
+    partial class newmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,8 +245,8 @@ namespace ServerBrowser.Data.Migrations
 
                     b.Property<string>("PublisherId")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("ServerId")
                         .HasColumnType("int");
@@ -266,11 +269,11 @@ namespace ServerBrowser.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ActiveTimeEnd")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("ActiveTimeEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("ActiveTimeStart")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("ActiveTimeStart")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("AddedOn")
                         .HasColumnType("datetime2");
@@ -280,8 +283,9 @@ namespace ServerBrowser.Data.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("IPAddress")
-                        .HasColumnType("int");
+                    b.Property<string>("IPAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -308,8 +312,8 @@ namespace ServerBrowser.Data.Migrations
 
                     b.Property<string>("PublisherId")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("ServerType")
                         .HasColumnType("int");
@@ -342,8 +346,8 @@ namespace ServerBrowser.Data.Migrations
 
                     b.Property<string>("PublisherId")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("ServerIds")
                         .IsRequired()
@@ -377,8 +381,8 @@ namespace ServerBrowser.Data.Migrations
 
                     b.Property<string>("PublisherId")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("ServerId")
                         .HasColumnType("int");

@@ -25,7 +25,7 @@ namespace ServerBrowser.Data.Models
 
         [Required]
         [MinLength(0)]
-        [MaxLength(32)]
+        [MaxLength(64)]
         public string PublisherId { get; set; } = string.Empty!;
         
         [Required]

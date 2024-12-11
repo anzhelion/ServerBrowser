@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ServerBrowser.Data;
 using ServerBrowser.Data.Models;
 using ServerBrowser.Models;
 using System.Diagnostics;
@@ -10,11 +11,11 @@ namespace ServerBrowser.Controllers
 
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private ApplicationDbContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context_)
         {
-            _logger = logger;
+            this.context = context_;
         }
 
         public IActionResult Index()

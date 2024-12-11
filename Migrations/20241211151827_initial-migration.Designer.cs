@@ -9,11 +9,11 @@ using ServerBrowser.Data;
 
 #nullable disable
 
-namespace ServerBrowser.Data.Migrations
+namespace ServerBrowser.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241211135704_initial")]
-    partial class initial
+    [Migration("20241211151827_initial-migration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -269,11 +269,11 @@ namespace ServerBrowser.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ActiveTimeEnd")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("ActiveTimeEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("ActiveTimeStart")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("ActiveTimeStart")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("AddedOn")
                         .HasColumnType("datetime2");
@@ -283,8 +283,9 @@ namespace ServerBrowser.Data.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("IPAddress")
-                        .HasColumnType("int");
+                    b.Property<string>("IPAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
