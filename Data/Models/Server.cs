@@ -35,10 +35,11 @@ namespace ServerBrowser.Data.Models
 
         [Required]
         public int ServerType { get; set; }
-        // 0 - Diverse Server
-        // 1 - Game Server
-        // 2 - Lobby Server
-        // 3 - Chatting Server
+        // 0 - No Server
+        // 1 - Diverse Server
+        // 2 - Game Server
+        // 3 - Lobby Server
+        // 4 - Chatting Server
 
         [Required]
         public string IPAddress { get; set; }

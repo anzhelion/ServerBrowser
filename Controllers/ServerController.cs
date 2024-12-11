@@ -2,6 +2,7 @@
 using ServerBrowser.Data;
 using ServerBrowser.Data.Models;
 using ServerBrowser.Models;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Policy;
@@ -19,6 +20,10 @@ namespace ServerBrowser.Controllers
 
         public IActionResult Index()
         {
+            List<string> types = context.ServerTypes
+        .Select(model => model.Name)
+        .ToList();
+
             List<ServerViewModel> models = context.Servers
         .Select(model => new ServerViewModel
         {
@@ -38,6 +43,7 @@ namespace ServerBrowser.Controllers
             IsDedicated = model.IsDedicated,
             IsOfficial = model.IsOfficial,
             IsRemoved = model.IsRemoved,
+            TypeString = types[model.ServerType - 1], // minus 1 for 0 index null type
         })
         .ToList();
 

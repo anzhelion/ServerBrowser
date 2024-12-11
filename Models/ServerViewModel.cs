@@ -39,5 +39,7 @@ namespace ServerBrowser.Models
         public bool IsOfficial { get; set; }
 
         public bool IsRemoved { get; set; }
+
+        public string TypeString { get; set; } = string.Empty;
     }
 }
