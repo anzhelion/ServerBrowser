@@ -19,7 +19,7 @@ namespace ServerBrowser.Controllers
 
         public IActionResult Index()
         {
-            List<AnnouncementViewModel> models = context.ServerReviews
+            List<AnnouncementViewModel> models = context.Announcements
             .Select(model => new AnnouncementViewModel
             {
                 Id = model.Id,
