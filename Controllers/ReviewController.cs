@@ -19,16 +19,15 @@ namespace ServerBrowser.Controllers
 
         public IActionResult Index()
         {
-            List<ListViewModel> models = context.ServerLists
-            .Select(model => new ListViewModel
+            List<ReviewViewModel> models = context.ServerReviews
+            .Select(model => new ReviewViewModel
             {
                 Id = model.Id,
                 Title = model.Title,
                 Description = model.Description,
                 PublisherId = model.PublisherId,
                 AddedOn = model.AddedOn,
-                ServerIds = string.Join(" ", model.ServerIds)
-                    
+                ServerId = model.ServerId
             })
             .ToList();
 
@@ -42,22 +41,18 @@ namespace ServerBrowser.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(ListViewModel model)
+        public IActionResult Add(ReviewViewModel model)
         {
-            int[] Ids = model.ServerIds.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(int.Parse)
-                    .ToArray();
-
-            var data = new ServerList
+            var data = new ServerReview
             {
                 Title = model.Title,
                 Description = model.Description,
                 PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 AddedOn = model.AddedOn,
-                ServerIds = Ids
+                ServerId = model.ServerId
             };
 
-            context.ServerLists.Add(data);
+            context.ServerReviews.Add(data);
             context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
