@@ -44,10 +44,6 @@ namespace ServerBrowser.Controllers
         [HttpPost]
         public IActionResult Add(ListViewModel model)
         {
-            int[] Ids = model.ServerIds.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(int.Parse)
-                    .ToArray();
-
             bool IsValid = true;
 
             // Validation
@@ -68,13 +64,24 @@ namespace ServerBrowser.Controllers
                 IsValid = false;
             }
 
-            foreach (var Id in Ids)
+            int[] Ids = null;
+            if (model.ServerIds != null)
             {
-                int Count = context.Servers.Where(x => x.Id == Id).Count();
-                if (Count != 1)
+                Ids = model.ServerIds.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(int.Parse)
+            .ToArray();
+                foreach (var Id in Ids)
                 {
-                    IsValid = false;
+                    int Count = context.Servers.Where(x => x.Id == Id).Count();
+                    if (Count != 1)
+                    {
+                        IsValid = false;
+                    }
                 }
+            }
+            else
+            {
+                IsValid = false;
             }
 
             if (IsValid)
