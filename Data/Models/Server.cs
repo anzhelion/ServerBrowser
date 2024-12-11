@@ -29,9 +29,6 @@ namespace ServerBrowser.Data.Models
         [MinLength(0)]
         [MaxLength(32)]
         public string PublisherId { get; set; } = string.Empty!;
-
-        [ForeignKey(nameof(PublisherId))]
-        public IdentityUser Publisher { get; set; } = null!;
         
         [Required]
         public DateTime AddedOn { get; set; }

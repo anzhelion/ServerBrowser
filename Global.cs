@@ -10,7 +10,6 @@ namespace ServerBrowser
         public static int[] ServerTimestamp = new int[256];
         public static DateTime[] ServerLatestActive = new DateTime[256];
 
-        private static Thread? ServerListener;
         public static void Listen()
         {
             int ListenPort = 36114;

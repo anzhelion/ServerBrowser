@@ -5,8 +5,8 @@ using ServerBrowser.Data;
 using System.Collections.Generic;
 
 // Start the listen service
-var ServerListener = new Thread(new ThreadStart(Global.Listen));
-ServerListener.Start();
+// var ServerListener = new Thread(new ThreadStart(Global.Listen));
+// ServerListener.Start();
 
 var builder = WebApplication.CreateBuilder(args);
 
