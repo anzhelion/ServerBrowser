@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ReviewViewModel>
+@{
+    ViewData["Title"] = "Server-Reviews Browser";
+}
+
+<div class="text-center">
+    <h1 class="display-4">There are currently @Model.Count() server reviews!</h1>
+    <a asp-controller="Review" asp-action="Add">Add Review</a>
+</div>
+
+<div>
+    @foreach (var thismodel in Model)
+    {
+        <div style="display: block; clear: both;">
+            Title: @thismodel.Title<br>
+            Desc: @thismodel.Description<br>
+            ServerId: @thismodel.ServerId<br>
+        </div>
+        <br>
+    }
+</div>
