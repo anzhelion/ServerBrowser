@@ -1,0 +1,22 @@
+﻿@model IEnumerable<AnnouncementViewModel>
+@{
+    ViewData["Title"] = "Announcements";
+}
+
+<div class="text-center">
+    <h1 class="display-4">There are currently @Model.Count() server announcements!</h1>
+    <a asp-controller="Announcement" asp-action="Add">Add Announcement</a>
+</div>
+
+<div>
+    @foreach (var thismodel in Model)
+    {
+        <div style="display: block; clear: both;">
+            Title: @thismodel.Title<br>
+            Desc: @thismodel.Description<br>
+            AddedOn: @thismodel.AddedOn<br>
+            ServerId: @thismodel.ServerId<br>
+        </div>
+        <br>
+    }
+</div>
