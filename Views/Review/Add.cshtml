@@ -1,0 +1,21 @@
+﻿@model ListViewModel
+@{
+    ViewData["Title"] = "Server-Reviews Browser";
+}
+
+<div class="text-center">
+    <h1 class="display-4">You are creating a review!</h1>
+</div>
+
+<div>
+    <form asp-controller="Review" asp-action="Add" method="post">
+        Title<input type="text" name="Title" /><br>
+        Description<input type="text" name="Description" /><br>
+        <input type="hidden" name="PublisherId" />
+        AddedOn<input type="datetime-local" name="AddedOn" /><br>
+        ServerId<input type="number" name="ServerId" /><br>
+
+        <button type="submit">Create</button>
+    </form>
+</div>
+
