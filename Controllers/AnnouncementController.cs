@@ -19,8 +19,8 @@ namespace ServerBrowser.Controllers
 
         public IActionResult Index()
         {
-            List<ReviewViewModel> models = context.ServerReviews
-            .Select(model => new ReviewViewModel
+            List<AnnouncementViewModel> models = context.ServerReviews
+            .Select(model => new AnnouncementViewModel
             {
                 Id = model.Id,
                 Title = model.Title,
@@ -43,7 +43,7 @@ namespace ServerBrowser.Controllers
         [HttpPost]
         public IActionResult Add(ReviewViewModel model)
         {
-            var data = new ServerReview
+            var data = new Announcement
             {
                 Title = model.Title,
                 Description = model.Description,
@@ -52,7 +52,7 @@ namespace ServerBrowser.Controllers
                 ServerId = model.ServerId
             };
 
-            context.ServerReviews.Add(data);
+            context.Announcements.Add(data);
             context.SaveChanges();
 
             return RedirectToAction(nameof(Index));

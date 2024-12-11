@@ -2,7 +2,7 @@
 
 namespace ServerBrowser.Models
 {
-    public class AnnouncemenetViewModel
+    public class AnnouncementViewModel
     {
         public int Id { get; set; }
 
