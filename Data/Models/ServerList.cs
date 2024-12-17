@@ -1,7 +1,6 @@
-﻿using Humanizer.Localisation;
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using static ServerBrowser.Constants;
 
 namespace ServerBrowser.Data.Models
 {
@@ -10,25 +9,18 @@ namespace ServerBrowser.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [MinLength(3)]
-        [MaxLength(64)]
+        [MaxLength(ListTitleMaxLen)]
         public string Title { get; set; } = string.Empty;
 
-        [Required]
-        [MinLength(0)]
-        [MaxLength(128)]
-        public string Description { get; set; } = string.Empty;
+        [MaxLength(ListDescMaxLen)]
+        public string? Description { get; set; } = string.Empty;
 
-        [Required]
-        [MinLength(0)]
-        [MaxLength(64)]
-        public string PublisherId { get; set; } = string.Empty!;
-        
-        [Required]
-        public DateTime AddedOn { get; set; }
+        [MaxLength(PublisherMaxLen)]
+        public string? PublisherId { get; set; } = string.Empty!;
 
-        [Required]
-        public int[] ServerIds { get; set; } = new int[100];
+        public DateTime? AddedOn { get; set; }
+
+        [MaxLength(ListIdsMaxLen)]
+        public int[] ServerIds { get; set; } = new int[ListIdsMaxLen];
     }
 }

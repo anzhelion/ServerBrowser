@@ -1,0 +1,73 @@
+﻿@model FullDetailsViewModel
+@{
+    ViewData["Title"] = "Server Full Details";
+    var Server = Model.serverViewModel;
+}
+
+<div class="text-center">
+    <h1 class="display-4">You are viewing the full details of a server!</h1>
+</div>
+
+<div>
+    <div class="display-4">Server:</div>
+    @if (Server != null)
+    {
+        <div>
+            Id:                   @Server.Id<br>
+            Title:                @Server.Title<br>
+            Description:          @Server.Description<br>
+            ImageUrl:             @Server.ImageUrl<br>
+            PublisherId:          @Server.PublisherId<br>
+            AddedOn:              @Server.AddedOn<br>
+            ServerType:           @Server.ServerType<br>
+            IPAddress:            @Server.IPAddress<br>
+            LastLiveOn:           @Server.LastLiveOn<br>
+            ActiveTimeStart:      @Server.ActiveTimeStart<br>
+            ActiveTimeEnd:        @Server.ActiveTimeEnd<br>
+            PeakConcurrentUsers:  @Server.PeakConcurrentUsers<br>
+            IsPrivate:            @Server.IsPrivate<br>
+            IsDedicated:          @Server.IsDedicated<br>
+            IsOfficial:           @Server.IsOfficial<br>
+            IsRemoved:            @Server.IsRemoved<br>
+        </div>
+    }
+</div>
+
+<div>
+    <div class="display-4">Reviews:</div>
+    @if (Model.reviewViewModels != null)
+    @foreach (var thismodel in Model.reviewViewModels)
+    {
+        <div>
+            Title: @thismodel.Title<br>
+            Desc: @thismodel.Description<br>
+        </div>
+        <br>
+    }
+</div>
+
+<div>
+    <div class="display-4">Lists:</div>
+    @if (Model.listViewModels != null)
+        @foreach (var thismodel in Model.listViewModels)
+        {
+            <div>
+                Title: @thismodel.Title<br>
+                Desc: @thismodel.Description<br>
+            </div>
+            <br>
+        }
+</div>
+
+<div>
+    <div class="display-4">Announcements:</div>
+    @if (Model.announcementViewModels != null)
+        @foreach (var thismodel in Model.announcementViewModels)
+        {
+            <div>
+                Title: @thismodel.Title<br>
+                Desc: @thismodel.Description<br>
+            </div>
+            <br>
+        }
+</div>

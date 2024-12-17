@@ -16,9 +16,11 @@
             Server: @thismodel.Title<br>
             Desc: @thismodel.Description<br>
             PCU: @thismodel.PeakConcurrentUsers, AddedOn: @thismodel.AddedOn<br>
-            Type: @thismodel.TypeString, ServerId: @thismodel.Id<br>
+            Type: @thismodel.TypeString, ServerId: <a asp-controller="Server" asp-action="Details" asp-route-id="@thismodel.Id">@thismodel.Id</a><br>
         </div>
         <br>
         <br>
     }
 </div>
+
+<a asp-controller="Server" asp-action="About" class="display-4">About</a>

@@ -15,8 +15,25 @@
             Title: @thismodel.Title<br>
             Desc: @thismodel.Description<br>
             AddedOn: @thismodel.AddedOn<br>
-            ServerId: @thismodel.ServerId<br>
+            ServerIds:
+            @{
+                int[] list = thismodel.ServerIds.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(int.Parse)
+                .ToArray();
+
+                for (int i = 0; i < list.Length; ++i)
+                {
+                    var item = list[i];
+                    <a asp-controller="Server" asp-action="Index">@item</a>
+                    if (i != list.Length - 1)
+                    {
+                        <text>, </text>
+                    }
+                }
+            }
         </div>
         <br>
     }
 </div>
+
+<a asp-controller="Announcement" asp-action="About" class="display-4">About</a>

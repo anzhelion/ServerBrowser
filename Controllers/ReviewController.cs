@@ -10,16 +10,16 @@ namespace ServerBrowser.Controllers
 {
     public class ReviewController : Controller
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
 
-        public ReviewController(ApplicationDbContext context_)
+        public ReviewController(ApplicationDbContext context)
         {
-            this.context = context_;
+            this._context = context;
         }
 
         public IActionResult Index()
         {
-            List<ReviewViewModel> models = context.ServerReviews
+            List<ReviewViewModel> models = _context.ServerReviews
             .Select(model => new ReviewViewModel
             {
                 Id = model.Id,
@@ -32,6 +32,10 @@ namespace ServerBrowser.Controllers
             .ToList();
 
             return View(models);
+        }
+        public IActionResult About()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -46,24 +50,12 @@ namespace ServerBrowser.Controllers
             bool IsValid = true;
 
             // Validation
-            if (model.Title?.Length > 64 ||
-                model.Description?.Length > 256)
+            if (!ModelState.IsValid)
             {
                 IsValid = false;
             }
 
-            if (model.Title == null || model.Description == null)
-            {
-                IsValid = false;
-            }
-
-            if (model.Title?.Length < 1 ||
-                model.Description?.Length < 1)
-            {
-                IsValid = false;
-            }
-
-            int Count = context.Servers.Where(x => x.Id == model.ServerId).Count();
+            int Count = _context.Servers.Where(x => x.Id == model.ServerId).Count();
             if (Count != 1)
             {
                 IsValid = false;
@@ -75,13 +67,13 @@ namespace ServerBrowser.Controllers
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    PublisherId = model.PublisherId ?? User.FindFirstValue(ClaimTypes.NameIdentifier),
                     AddedOn = model.AddedOn,
                     ServerId = model.ServerId
                 };
 
-                context.ServerReviews.Add(data);
-                context.SaveChanges();
+                _context.ServerReviews.Add(data);
+                _context.SaveChanges();
             }
 
             return RedirectToAction(nameof(Index));

@@ -34,6 +34,10 @@ namespace ServerBrowser.Controllers
 
             return View(models);
         }
+        public IActionResult About()
+        {
+            return View();
+        }
 
         [HttpGet]
         public IActionResult Add()
@@ -47,19 +51,7 @@ namespace ServerBrowser.Controllers
             bool IsValid = true;
 
             // Validation
-            if (model.Title?.Length > 64 ||
-                model.Description?.Length > 256)
-            {
-                IsValid = false;
-            }
-
-            if (model.Title == null || model.Description == null)
-            {
-                IsValid = false;
-            }
-
-            if (model.Title?.Length < 1 ||
-                model.Description?.Length < 1)
+            if (!ModelState.IsValid)
             {
                 IsValid = false;
             }
@@ -68,8 +60,9 @@ namespace ServerBrowser.Controllers
             if (model.ServerIds != null)
             {
                 Ids = model.ServerIds.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(int.Parse)
-            .ToArray();
+                    .Select(int.Parse)
+                    .ToArray();
+
                 foreach (var Id in Ids)
                 {
                     int Count = context.Servers.Where(x => x.Id == Id).Count();
@@ -90,7 +83,7 @@ namespace ServerBrowser.Controllers
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    PublisherId = model.PublisherId ?? User.FindFirstValue(ClaimTypes.NameIdentifier),
                     AddedOn = model.AddedOn,
                     ServerIds = Ids
                 };

@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿// This is not used, feauture is yet to be implemented
+/*using System.Net.Sockets;
 using System.Net;
 
 namespace ServerBrowser
@@ -73,3 +74,4 @@ namespace ServerBrowser
         }
     }
 }
+*/

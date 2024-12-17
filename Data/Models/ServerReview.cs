@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using static ServerBrowser.Constants;
 
 namespace ServerBrowser.Data.Models
 {
@@ -10,25 +12,17 @@ namespace ServerBrowser.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
         public int ServerId { get; set; }
 
-        [Required]
-        [MinLength(3)]
-        [MaxLength(64)]
+        [MaxLength(ReviewTitleMaxLen)]
         public string Title { get; set; } = string.Empty;
 
-        [Required]
-        [MinLength(0)]
-        [MaxLength(256)]
-        public string Description { get; set; } = string.Empty;
+        [MaxLength(ReviewDescMaxLen)]
+        public string? Description { get; set; } = string.Empty;
 
-        [Required]
-        [MinLength(0)]
-        [MaxLength(64)]
-        public string PublisherId { get; set; } = string.Empty!;
-        
-        [Required]
-        public DateTime AddedOn { get; set; }
+        [MaxLength(PublisherMaxLen)]
+        public string? PublisherId { get; set; } = string.Empty!;
+
+        public DateTime? AddedOn { get; set; }
     }
 }

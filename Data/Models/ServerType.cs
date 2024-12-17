@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using static ServerBrowser.Constants;
 
 namespace ServerBrowser.Data.Models
 {
@@ -7,14 +9,10 @@ namespace ServerBrowser.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [MinLength(3)]
-        [MaxLength(32)]
+        [MaxLength(ServerTypeNameMaxLength)]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
-        [MinLength(10)]
-        [MaxLength(128)]
-        public string Description { get; set; } = string.Empty;
+        [MaxLength(ServerTypeDescMaxLength)]
+        public string? Description { get; set; } = string.Empty;
     }
 }

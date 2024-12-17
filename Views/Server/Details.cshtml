@@ -1,0 +1,31 @@
+﻿@model ServerViewModel
+@{
+    ViewData["Title"] = "Server Details";
+}
+
+<div class="text-center">
+    <h1 class="display-4">You are viewing a server!</h1>
+</div>
+
+<div>
+    Id:                   @Model.Id<br>
+    Title:                @Model.Title<br>
+    Description:          @Model.Description<br>
+    ImageUrl:             @Model.ImageUrl<br>
+    PublisherId:          @Model.PublisherId<br>
+    AddedOn:              @Model.AddedOn<br>
+    ServerType:           @Model.ServerType<br>
+    IPAddress:            @Model.IPAddress<br>
+    LastLiveOn:           @Model.LastLiveOn<br>
+    ActiveTimeStart:      @Model.ActiveTimeStart<br>
+    ActiveTimeEnd:        @Model.ActiveTimeEnd<br>
+    PeakConcurrentUsers:  @Model.PeakConcurrentUsers<br>
+    IsPrivate:            @Model.IsPrivate<br>
+    IsDedicated:          @Model.IsDedicated<br>
+    IsOfficial:           @Model.IsOfficial<br>
+    IsRemoved:            @Model.IsRemoved<br>
+</div>
+
+<div class="text-center">
+    <a asp-controller="Server" asp-action="FullDetails" asp-route-id="@Model.Id" class="display-4">Full Details</a>
+</div>

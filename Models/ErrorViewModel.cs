@@ -1,3 +1,5 @@
+using static ServerBrowser.Constants;
+
 namespace ServerBrowser.Models
 {
     public class ErrorViewModel

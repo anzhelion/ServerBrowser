@@ -11,14 +11,13 @@ namespace ServerBrowser.Controllers
 
     public class ErrorController : Controller
     {
-        private ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
 
-        public ErrorController(ApplicationDbContext context_)
+        public ErrorController(ApplicationDbContext context)
         {
-            this.context = context_;
+            this._context = context;
         }
 
-        
         [Route("Error/{statusCode}")]
         public IActionResult HttpStatusCodeHandler(int statusCode)
         {

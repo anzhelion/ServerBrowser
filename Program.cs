@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServerBrowser;
 using ServerBrowser.Data;
+using ServerBrowser.Services;
+using ServerBrowser.Services.Contracts;
 using System.Collections.Generic;
 
 // Start the listen service
@@ -19,6 +21,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IServerService, ServerService>();
 
 var app = builder.Build();
 app.UseStatusCodePagesWithReExecute("/Error/{0}");

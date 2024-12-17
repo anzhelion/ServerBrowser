@@ -23,7 +23,7 @@
                 for (int i = 0; i < list.Length; ++i)
                 {
                     var item = list[i];
-                    <a asp-controller="Server" asp-action="Index">@item</a>
+                    <a asp-controller="Server" asp-action="Details" asp-route-id="@item">@item</a>
                     if (i != list.Length - 1)
                     {
                         <text>, </text>
@@ -35,3 +35,5 @@
         <br>
     }
 </div>
+
+<a asp-controller="List" asp-action="About" class="display-4">About</a>

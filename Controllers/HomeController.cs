@@ -11,11 +11,11 @@ namespace ServerBrowser.Controllers
 
     public class HomeController : Controller
     {
-        private ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ApplicationDbContext context_)
+        public HomeController(ApplicationDbContext context)
         {
-            this.context = context_;
+            this._context = context;
         }
 
         public IActionResult Index()

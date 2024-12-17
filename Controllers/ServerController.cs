@@ -6,48 +6,30 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Policy;
+using ServerBrowser.Services.Contracts;
 
 namespace ServerBrowser.Controllers
 {
-    public class ServerController : Controller
+    public class ServerController : BaseController
     {
-        private readonly ApplicationDbContext context;
+        private readonly IServerService _service;
 
-        public ServerController(ApplicationDbContext context_)
+        public ServerController(IServerService service)
         {
-            this.context = context_;
+            _service = service;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<string> types = context.ServerTypes
-        .Select(model => model.Name)
-        .ToList();
+            List<string> types = await _service.GetServerTypes();
 
-            List<ServerViewModel> models = context.Servers
-        .Select(model => new ServerViewModel
-        {
-            Id = model.Id,
-            Title = model.Title,
-            Description = model.Description,
-            ImageUrl = model.ImageUrl,
-            PublisherId = model.PublisherId,
-            AddedOn = model.AddedOn,
-            ServerType = model.ServerType,
-            IPAddress = model.IPAddress,
-            LastLiveOn = model.LastLiveOn,
-            ActiveTimeStart = model.ActiveTimeStart,
-            ActiveTimeEnd = model.ActiveTimeEnd,
-            PeakConcurrentUsers = model.PeakConcurrentUsers,
-            IsPrivate = model.IsPrivate,
-            IsDedicated = model.IsDedicated,
-            IsOfficial = model.IsOfficial,
-            IsRemoved = model.IsRemoved,
-            TypeString = types[model.ServerType - 1], // minus 1 for 0 index null type
-        })
-        .ToList();
+            List<ServerViewModel> models = await _service.GetAllServerModels(types);
 
             return View(models);
+        }
+        public async Task<IActionResult> About()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -56,57 +38,48 @@ namespace ServerBrowser.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            ServerViewModel model = await _service.GetServerById(id) ?? new();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FullDetails(int id)
+        {
+            FullDetailsViewModel model = new();
+
+            // Server
+            model.serverViewModel = await _service.GetServerById(id);
+
+            // Reviews
+            model.reviewViewModels = await _service.GetReviewsByServerId(id);
+
+            // Lists
+            model.listViewModels = await _service.GetListsByServerId(id);
+
+            // Announcements
+            model.announcementViewModels = await _service.GetAnnouncementsByServerId(id);
+
+            return View(model);
+        }
+
         [HttpPost]
-        public IActionResult Add(ServerViewModel model)
+        public async Task<IActionResult> Add(ServerViewModel model)
         {
             bool IsValid = true;
 
             // Validation
-            if (model.Title?.Length > 64 ||
-                model.Description?.Length > 64 ||
-                model.ImageUrl?.Length > 128 ||
-                model.IPAddress?.Length > 128)
-            {
-                IsValid = false;
-            }
-
-            if (model.Title == null || model.Description == null ||
-                model.ImageUrl == null || model.IPAddress == null)
-            {
-                IsValid = false;
-            }
-
-            if (model.Title?.Length < 1 ||
-                model.Description?.Length < 1 ||
-                model.ImageUrl?.Length < 1 ||
-                model.IPAddress?.Length < 1)
+            if (!ModelState.IsValid)
             {
                 IsValid = false;
             }
 
             if (IsValid)
             {
-                var data = new Server
-                {
-                    Title = model.Title,
-                    Description = model.Description,
-                    ImageUrl = model.ImageUrl,
-                    PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    AddedOn = model.AddedOn,
-                    ServerType = model.ServerType,
-                    IPAddress = model.IPAddress,
-                    LastLiveOn = model.LastLiveOn,
-                    ActiveTimeStart = model.ActiveTimeStart,
-                    ActiveTimeEnd = model.ActiveTimeEnd,
-                    PeakConcurrentUsers = model.PeakConcurrentUsers,
-                    IsDedicated = model.IsDedicated,
-                    IsOfficial = model.IsOfficial,
-                    IsRemoved = model.IsRemoved,
-                    IsPrivate = model.IsPrivate,
-                };
-
-                context.Servers.Add(data);
-                context.SaveChanges();
+                await _service.AddServer(GetUserId(), model);
             }
 
 

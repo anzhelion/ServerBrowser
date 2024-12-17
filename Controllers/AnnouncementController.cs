@@ -27,11 +27,19 @@ namespace ServerBrowser.Controllers
                 Description = model.Description,
                 PublisherId = model.PublisherId,
                 AddedOn = model.AddedOn,
-                ServerId = model.ServerId
+                ServerIds = string.Join(" ", model.ServerIds),
+                Severity = model.Severity,
             })
             .ToList();
 
+            // Reverse the list to get new announcements first
+            models.Reverse();
+
             return View(models);
+        }
+        public IActionResult About()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -41,30 +49,33 @@ namespace ServerBrowser.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(ReviewViewModel model)
+        public IActionResult Add(AnnouncementViewModel model)
         {
             bool IsValid = true;
 
             // Validation
-            if (model.Title?.Length > 64 ||
-                model.Description?.Length > 128)
+            if (!ModelState.IsValid)
             {
                 IsValid = false;
             }
 
-            if (model.Title == null || model.Description == null)
+            int[] Ids = null;
+            if (model.ServerIds != null)
             {
-                IsValid = false;
-            }
+                Ids = model.ServerIds.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToArray();
 
-            if (model.Title?.Length < 1 ||
-                model.Description?.Length < 1)
-            {
-                IsValid = false;
+                foreach (var Id in Ids)
+                {
+                    int Count = context.Servers.Where(x => x.Id == Id).Count();
+                    if (Count != 1)
+                    {
+                        IsValid = false;
+                    }
+                }
             }
-
-            int Count = context.Servers.Where(x => x.Id == model.ServerId).Count();
-            if (Count != 1)
+            else
             {
                 IsValid = false;
             }
@@ -76,9 +87,10 @@ namespace ServerBrowser.Controllers
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    PublisherId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    PublisherId = model.PublisherId ?? User.FindFirstValue(ClaimTypes.NameIdentifier),
                     AddedOn = model.AddedOn,
-                    ServerId = model.ServerId
+                    ServerIds = Ids,
+                    Severity = model.Severity
                 };
 
                 context.Announcements.Add(data);

@@ -14,8 +14,10 @@
         <div style="display: block; clear: both;">
             Title: @thismodel.Title<br>
             Desc: @thismodel.Description<br>
-            ServerId: @thismodel.ServerId<br>
+            ServerId: <a asp-controller="Server" asp-action="Details" asp-route-id="@thismodel.ServerId">@thismodel.ServerId</a><br>
         </div>
         <br>
     }
 </div>
+
+<a asp-controller="Review" asp-action="About" class="display-4">About</a>
