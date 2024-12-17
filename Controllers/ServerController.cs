@@ -33,7 +33,7 @@ namespace ServerBrowser.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             return View();
         }
@@ -67,6 +67,7 @@ namespace ServerBrowser.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ServerViewModel model)
         {
             bool IsValid = true;
@@ -84,6 +85,28 @@ namespace ServerBrowser.Controllers
 
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(SearchViewModel model)
+        {
+            bool IsValid = true;
+
+            if (!ModelState.IsValid)
+            {
+                IsValid = false;
+            }
+
+            List<ServerViewModel> models = new();
+            if (IsValid)
+            {
+                models = await _service.GetServersByStartName(model.Match);
+                return View(nameof(Index), models);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

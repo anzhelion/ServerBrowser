@@ -17,7 +17,7 @@ namespace ServerBrowser.Controllers
             this.context = context_;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<ListViewModel> models = context.ServerLists
             .Select(model => new ListViewModel
@@ -34,19 +34,19 @@ namespace ServerBrowser.Controllers
 
             return View(models);
         }
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Add(ListViewModel model)
+        public async Task<IActionResult> Add(ListViewModel model)
         {
             bool IsValid = true;
 

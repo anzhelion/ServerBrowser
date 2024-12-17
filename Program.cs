@@ -21,7 +21,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// Services
 builder.Services.AddScoped<IServerService, ServerService>();
+builder.Services.AddScoped<ITimelineService, TimelineService>();
 
 var app = builder.Build();
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
@@ -46,8 +49,9 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "areas",
+    pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
+app.MapDefaultControllerRoute();
 app.MapRazorPages();
 
 app.Run();

@@ -14,10 +14,10 @@ namespace ServerBrowser.Data.Models
         [MaxLength(TimelineNameMaxLength)]
         public string Name { get; set; } = string.Empty;
 
-        [MaxLength(TimelineEventsMax)]
-        public string[]? EventDescription { get; set; } = new string[TimelineEventsMax];
+        [MaxLength(TimelineEventDescriptionMaxLen)]
+        public string EventDescription { get; set; } = string.Empty;
 
         [MaxLength(TimelineEventsMax)]
-        public DateTime[]? AddedOn { get; set; }
+        public DateTime?[]? AddedOn { get; set; }
     }
 }

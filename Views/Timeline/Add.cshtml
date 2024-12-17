@@ -1,0 +1,20 @@
+﻿@model ListViewModel
+@{
+    ViewData["Title"] = "Add Timeline";
+}
+
+<div class="text-center">
+    <h1 class="display-4">You are creating a timeline!</h1>
+</div>
+
+<div>
+    <form asp-controller="Timeline" asp-action="Add" method="post">
+        Name<input type="text" name="Name" /><br>
+        EventDescription<input type="text" name="DescriptionsInput" /><br>
+        AddedOn<input type="text" name="InputAddedOn" /><br>
+        ServerId<input type="number" name="ServerId" /><br>
+
+        <button type="submit">Create</button>
+    </form>
+</div>
+

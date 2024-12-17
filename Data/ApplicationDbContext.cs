@@ -20,5 +20,7 @@ namespace ServerBrowser.Data
         public DbSet<ServerReview> ServerReviews { get; set; }
 
         public DbSet<ServerType> ServerTypes { get; set; }
+
+        public DbSet<Timeline> Timelines { get; set; }
     }
 }

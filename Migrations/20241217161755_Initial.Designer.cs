@@ -12,7 +12,7 @@ using ServerBrowser.Data;
 namespace ServerBrowser.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241217041136_Initial")]
+    [Migration("20241217161755_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -414,6 +414,36 @@ namespace ServerBrowser.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServerTypes");
+                });
+
+            modelBuilder.Entity("ServerBrowser.Data.Models.Timeline", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AddedOn")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("EventDescription")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<int>("ServerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Timelines");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

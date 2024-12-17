@@ -1,0 +1,32 @@
+﻿@model IEnumerable<TimelineViewModel>
+@{
+    ViewData["Title"] = "Server Timelines";
+}
+
+<div class="text-center">
+    <h1 class="display-4">There are currently @Model.Count() timelines!</h1>
+    <a asp-controller="Timeline" asp-action="Add">Add Timeline</a>
+</div>
+
+<div>
+    @foreach (var thismodel in Model)
+    {
+        <div style="display: block; clear: both;">
+            Name: @thismodel.Name<br>
+            @for (int i = 0; i < thismodel.EventDescription.Length; ++i)
+            {
+                <div>
+                    Index: @i, 
+                    Desc: @thismodel.EventDescription[i]
+                    @if (thismodel.AddedOn != null)
+                    {
+                        <span>, Time: (thismodel.AddedOn[i])</span>
+                    }
+                </div>
+            }
+        </div>
+        <br>
+    }
+</div>
+
+<a asp-controller="Review" asp-action="About" class="display-4">About</a>

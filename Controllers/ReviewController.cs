@@ -17,7 +17,7 @@ namespace ServerBrowser.Controllers
             this._context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<ReviewViewModel> models = _context.ServerReviews
             .Select(model => new ReviewViewModel
@@ -33,19 +33,19 @@ namespace ServerBrowser.Controllers
 
             return View(models);
         }
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Add(ReviewViewModel model)
+        public async Task<IActionResult> Add(ReviewViewModel model)
         {
             bool IsValid = true;
 

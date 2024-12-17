@@ -17,5 +17,9 @@ namespace ServerBrowser.Services.Contracts
 
         Task AddServer(string UserId, ServerViewModel model);
 
+        Task<int> GetServerIdUsedCount(int id);
+
+        Task<List<ServerViewModel>> GetServersByStartName(string Name);
+
     }
 }

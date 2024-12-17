@@ -8,16 +8,14 @@
     <a asp-controller="Server" asp-action="Add">Add Server</a>
 </div>
 
+<form asp-controller="Server" asp-action="Search" method="post">
+    Search: <input type="text" name="Match" /><br><button type="submit">Search</button>
+</form>
+
 <div>
     @foreach (var thismodel in Model)
     {
-        <div style="display: block; clear: both;">
-            <img src="@thismodel.ImageUrl" style="width: 100px; height: auto; float: left; margin-right: 10px;" />
-            Server: @thismodel.Title<br>
-            Desc: @thismodel.Description<br>
-            PCU: @thismodel.PeakConcurrentUsers, AddedOn: @thismodel.AddedOn<br>
-            Type: @thismodel.TypeString, ServerId: <a asp-controller="Server" asp-action="Details" asp-route-id="@thismodel.Id">@thismodel.Id</a><br>
-        </div>
+        @await Html.PartialAsync("_ServerPartial", thismodel);
         <br>
         <br>
     }

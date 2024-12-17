@@ -82,7 +82,7 @@ namespace ServerBrowser.Services
 
         public async Task<List<ReviewViewModel>> GetReviewsByServerId(int id)
         {
-            List<ReviewViewModel> models =  await _context.ServerReviews
+            List<ReviewViewModel> models = await _context.ServerReviews
                 .Where(x => x.ServerId == id)
                 .Select(model => new ReviewViewModel
                 {
@@ -113,6 +113,32 @@ namespace ServerBrowser.Services
 
                 })
                 .ToListAsync();
+
+            return models;
+        }
+        public async Task<List<ServerViewModel>> GetServersByStartName(string Name)
+        {
+            List<ServerViewModel> models = await _context.Servers
+                .Where(x => x.Title.StartsWith(Name))
+                .Select(model => new ServerViewModel
+                {
+                    Id = model.Id,
+                    Title = model.Title,
+                    Description = model.Description,
+                    ImageUrl = model.ImageUrl,
+                    PublisherId = model.PublisherId,
+                    AddedOn = model.AddedOn,
+                    ServerType = model.ServerType,
+                    IPAddress = model.IPAddress,
+                    LastLiveOn = model.LastLiveOn,
+                    ActiveTimeStart = model.ActiveTimeStart,
+                    ActiveTimeEnd = model.ActiveTimeEnd,
+                    PeakConcurrentUsers = model.PeakConcurrentUsers,
+                    IsPrivate = model.IsPrivate,
+                    IsDedicated = model.IsDedicated,
+                    IsOfficial = model.IsOfficial,
+                    IsRemoved = model.IsRemoved
+                }).ToListAsync();
 
             return models;
         }
@@ -159,6 +185,13 @@ namespace ServerBrowser.Services
 
             await _context.Servers.AddAsync(data);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> GetServerIdUsedCount(int id)
+        {
+            int Count = await _context.Servers.Where(x => x.Id == id).CountAsync();
+
+            return Count;
         }
     }
 }

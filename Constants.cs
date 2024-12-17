@@ -59,6 +59,8 @@
         public const int TimelineNameMaxLength = 32;
         public const int TimelineNameMinLength = 3;
 
+        public const int TimelineEventDescriptionMaxLen = 512;
+
         public const int TimelineEventsMax = 100;
     }
 }
