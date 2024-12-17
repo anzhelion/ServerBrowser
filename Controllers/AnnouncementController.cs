@@ -2,35 +2,25 @@
 using ServerBrowser.Data;
 using ServerBrowser.Data.Models;
 using ServerBrowser.Models;
+using ServerBrowser.Services.Contracts;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Policy;
 
 namespace ServerBrowser.Controllers
 {
-    public class AnnouncementController : Controller
+    public class AnnouncementController : BaseController
     {
-        private readonly ApplicationDbContext context;
+        private readonly IAnnouncementService _service;
 
-        public AnnouncementController(ApplicationDbContext context_)
+        public AnnouncementController(IAnnouncementService service)
         {
-            this.context = context_;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            List<AnnouncementViewModel> models = context.Announcements
-            .Select(model => new AnnouncementViewModel
-            {
-                Id = model.Id,
-                Title = model.Title,
-                Description = model.Description,
-                PublisherId = model.PublisherId,
-                AddedOn = model.AddedOn,
-                ServerIds = string.Join(" ", model.ServerIds),
-                Severity = model.Severity,
-            })
-            .ToList();
+            List<AnnouncementViewModel> models = await _service.GetAllAnnouncements();
 
             // Reverse the list to get new announcements first
             models.Reverse();
@@ -68,7 +58,7 @@ namespace ServerBrowser.Controllers
 
                 foreach (var Id in Ids)
                 {
-                    int Count = context.Servers.Where(x => x.Id == Id).Count();
+                    int Count = await _service.GetServerIdUsedCount(Id);
                     if (Count != 1)
                     {
                         IsValid = false;
@@ -82,19 +72,7 @@ namespace ServerBrowser.Controllers
 
             if (IsValid)
             {
-
-                var data = new Announcement
-                {
-                    Title = model.Title,
-                    Description = model.Description,
-                    PublisherId = model.PublisherId ?? User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    AddedOn = model.AddedOn,
-                    ServerIds = Ids,
-                    Severity = model.Severity
-                };
-
-                context.Announcements.Add(data);
-                context.SaveChanges();
+                await _service.AddAnnouncement(GetUserId(), Ids, model);
             }
 
             return RedirectToAction(nameof(Index));

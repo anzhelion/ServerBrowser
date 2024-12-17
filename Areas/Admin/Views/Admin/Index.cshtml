@@ -2,4 +2,11 @@
     ViewData["Title"] = "Admin Page";
 }
 
-This is the admin page.
+<div>
+    <h1 class="text-center">This is the admin page. Only the root admin user can use it.</h1>
+
+    <form asp-area="Admin" asp-controller="Admin" asp-action="/Admin/Admin/Wipe" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit">Wipe Database</button><br>
+    </form>
+</div>

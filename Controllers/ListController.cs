@@ -1,36 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NuGet.Packaging.Signing;
 using ServerBrowser.Data;
 using ServerBrowser.Data.Models;
 using ServerBrowser.Models;
+using ServerBrowser.Services.Contracts;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Policy;
 
 namespace ServerBrowser.Controllers
 {
-    public class ListController : Controller
+    public class ListController : BaseController
     {
-        private readonly ApplicationDbContext context;
+        private readonly IListService _service;
 
-        public ListController(ApplicationDbContext context_)
+        public ListController(IListService service)
         {
-            this.context = context_;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            List<ListViewModel> models = context.ServerLists
-            .Select(model => new ListViewModel
-            {
-                Id = model.Id,
-                Title = model.Title,
-                Description = model.Description,
-                PublisherId = model.PublisherId,
-                AddedOn = model.AddedOn,
-                ServerIds = string.Join(" ", model.ServerIds)
-                    
-            })
-            .ToList();
+            List<ListViewModel> models = await _service.GetAllLists();
 
             return View(models);
         }
@@ -65,7 +56,7 @@ namespace ServerBrowser.Controllers
 
                 foreach (var Id in Ids)
                 {
-                    int Count = context.Servers.Where(x => x.Id == Id).Count();
+                    int Count = await _service.GetServerIdUsedCount(Id);
                     if (Count != 1)
                     {
                         IsValid = false;
@@ -79,17 +70,7 @@ namespace ServerBrowser.Controllers
 
             if (IsValid)
             {
-                var data = new ServerList
-                {
-                    Title = model.Title,
-                    Description = model.Description,
-                    PublisherId = model.PublisherId ?? User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    AddedOn = model.AddedOn,
-                    ServerIds = Ids
-                };
-
-                context.ServerLists.Add(data);
-                context.SaveChanges();
+                await _service.AddList(GetUserId(), Ids, model);
             }
 
             return RedirectToAction(nameof(Index));

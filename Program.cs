@@ -25,6 +25,9 @@ builder.Services.AddControllersWithViews();
 // Services
 builder.Services.AddScoped<IServerService, ServerService>();
 builder.Services.AddScoped<ITimelineService, TimelineService>();
+builder.Services.AddScoped<IListService, ListService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
 
 var app = builder.Build();
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
@@ -50,8 +53,13 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
-app.MapDefaultControllerRoute();
+    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// app.MapDefaultControllerRoute();
 app.MapRazorPages();
 
 app.Run();

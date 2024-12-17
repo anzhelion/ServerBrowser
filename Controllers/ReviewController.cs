@@ -2,34 +2,25 @@
 using ServerBrowser.Data;
 using ServerBrowser.Data.Models;
 using ServerBrowser.Models;
+using ServerBrowser.Services.Contracts;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Policy;
 
 namespace ServerBrowser.Controllers
 {
-    public class ReviewController : Controller
+    public class ReviewController : BaseController
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IReviewService _service;
 
-        public ReviewController(ApplicationDbContext context)
+        public ReviewController(IReviewService service)
         {
-            this._context = context;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            List<ReviewViewModel> models = _context.ServerReviews
-            .Select(model => new ReviewViewModel
-            {
-                Id = model.Id,
-                Title = model.Title,
-                Description = model.Description,
-                PublisherId = model.PublisherId,
-                AddedOn = model.AddedOn,
-                ServerId = model.ServerId
-            })
-            .ToList();
+            List<ReviewViewModel> models = await _service.GetAllReviews();
 
             return View(models);
         }
@@ -55,7 +46,7 @@ namespace ServerBrowser.Controllers
                 IsValid = false;
             }
 
-            int Count = _context.Servers.Where(x => x.Id == model.ServerId).Count();
+            int Count = await _service.GetServerIdUsedCount(model.ServerId);
             if (Count != 1)
             {
                 IsValid = false;
@@ -63,17 +54,7 @@ namespace ServerBrowser.Controllers
 
             if (IsValid)
             {
-                var data = new ServerReview
-                {
-                    Title = model.Title,
-                    Description = model.Description,
-                    PublisherId = model.PublisherId ?? User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    AddedOn = model.AddedOn,
-                    ServerId = model.ServerId
-                };
-
-                _context.ServerReviews.Add(data);
-                _context.SaveChanges();
+                await _service.AddReview(GetUserId(), model);
             }
 
             return RedirectToAction(nameof(Index));

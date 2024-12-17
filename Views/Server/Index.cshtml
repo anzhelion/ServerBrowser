@@ -9,8 +9,11 @@
 </div>
 
 <form asp-controller="Server" asp-action="Search" method="post">
-    Search: <input type="text" name="Match" /><br><button type="submit">Search</button>
+    Search: <input type="text" name="Match" /><button type="submit">Search</button><br>
 </form>
+
+<br>
+<br>
 
 <div>
     @foreach (var thismodel in Model)
